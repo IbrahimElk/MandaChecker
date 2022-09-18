@@ -1,10 +1,11 @@
+from ast import Not
 from bs4 import BeautifulSoup as bs
 import os
 import glob
 from urllib.request import urlopen
 import numpy as np 
 import selectQuery as sq
-import time as ts
+import time as t
 import json 
 import matplotlib.pyplot as plt
 #------------------------------------------------------------------------------------
@@ -121,7 +122,7 @@ def Comparing(NestedLijstVanNamenVanHtml, NestedLijstVanNamenVanDatabase, Everyt
 #--------------------------------- MAIN FUNCTIONS -----------------------------------
 #------------------------------------------------------------------------------------
 
-def wieOntrbreekt(aantalZittingen):
+def wieOntrbreekt(aantalZittingen, time=False):
     A1 = t.time() #stap 1
     Everything = sq.getAllSittingsFromEveryBestuursEenheid(aantalZittingen)
     #aanwezigen volgens html pagina(we nemen aan dat dit altijd correct ingevuld is)
@@ -137,24 +138,27 @@ def wieOntrbreekt(aantalZittingen):
     #TODO check bij zitting dat meer dan de helft van de leden van de bestuursorgaan aanwezig zijn. 
     #TODO comparing Efficienter maken.
     RESULT = Comparing(LijstVanNamenVanHtml,LijstVanNamenVanDatabase,Everything)
-   
-    with open("sample" + str(aantalZittingen) + ".json", "w") as outfile:
-         json.dump(RESULT, outfile)
     A5 = t.time()
 
-    #vergelijken
-    return [A2-A1,A3-A2,A4-A3,A5-A4]
 
+    if not time:
+        return RESULT
+    else : 
+        return [A2-A1,A3-A2,A4-A3,A5-A4]
 
-def main(aantalzittingen):
+def main(aantalzittingen, time=False):
     begin = t.time()
+    if not time :
+        Names = wieOntrbreekt(aantalzittingen)
+        with open("sample" + str(aantalzittingen) + ".json", "w") as outfile:
+            json.dump(Names, outfile)
+        return Names
+    else: 
+        Time = wieOntrbreekt(aantalzittingen,True)
+        eind = t.time()
+        TOTAAL_TIJD =  eind-begin
+        return Time + [TOTAAL_TIJD]
     
-    Times = wieOntrbreekt(aantalzittingen)
-    # with open("sample.json", "w") as outfile:
-    #     json.dump(Names, outfile)
-    eind = t.time()
-    TOTAAL_TIJD =  eind-begin
-    return Times + [TOTAAL_TIJD]
 
 def AnalyzeTiming(x,y):
     lijst = []
@@ -191,5 +195,5 @@ def AnalyzeTiming(x,y):
     
     return 0
 
-# main(1)
+main(1)
 # AnalyzeTiming(100,10)

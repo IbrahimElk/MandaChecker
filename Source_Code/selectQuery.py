@@ -14,6 +14,12 @@ def getAllSittingsFromEveryBestuursEenheid(AantalZittingen):
      # alle namen van gemeenteraad alken    
     x = "\"" + "notulen" + "\""
     y = "\"" + "bestuursorganen" + "\""
+
+    if (AantalZittingen > 0):
+        z = "LIMIT " + str(AantalZittingen)
+    else : 
+        z = " "
+        
     sparql.setQuery("""
         PREFIX http: <http://www.w3.org/2011/http#>
         PREFIX prov: <http://www.w3.org/ns/prov#> 
@@ -33,7 +39,7 @@ def getAllSittingsFromEveryBestuursEenheid(AantalZittingen):
                 FILTER CONTAINS(STR(?linkNaarDieZitting), """ + x + """).
                 FILTER CONTAINS(STR(?bestuursorgaanUri), """ + y + """).
 
-        } LIMIT""" + str(AantalZittingen) + """
+        } """ + z + """
 
     """) 
     #TODO veralgemene, ENKEL NOTULEN WORDEN GEEXTRAHEERD en ENKEL BESTUURSORGANEN met "bestuursorganen" in de uri !(wegens error)!!! ZIE FILTER HIERBOVEN

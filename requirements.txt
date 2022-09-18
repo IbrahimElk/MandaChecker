@@ -1,0 +1,6 @@
+bs4==0.0.1
+rdflib==6.2.0
+numpy
+matplotlib==3.6.0
+urllib3
+glob2
