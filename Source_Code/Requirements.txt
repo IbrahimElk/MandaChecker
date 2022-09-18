@@ -1,0 +1,9 @@
+bs4=0.0.1
+rdflib=6.2.0
+numpy
+matplotlib.pyplot
+urllib.request
+glob
+os
+time
+json
