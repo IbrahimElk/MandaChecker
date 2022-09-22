@@ -5,11 +5,6 @@ import json
 sparql = sp.SPARQLWrapper("https://qa.centrale-vindplaats.lblod.info/sparql")
 sparql.setReturnFormat(sp.JSON)
 
-
-def main():
-    pass
-
-
 def getAllSittingsFromEveryBestuursEenheid(AantalZittingen):
      # alle namen van gemeenteraad alken    
     x = "\"" + "notulen" + "\""
@@ -45,8 +40,6 @@ def getAllSittingsFromEveryBestuursEenheid(AantalZittingen):
     #TODO veralgemene, ENKEL NOTULEN WORDEN GEEXTRAHEERD en ENKEL BESTUURSORGANEN met "bestuursorganen" in de uri !(wegens error)!!! ZIE FILTER HIERBOVEN
 
     result = sparql.query().convert()
-    # with open("data1.json","w") as filefornow:
-    #     json.dump(result,filefornow)
 
     alleZittingUrls = {}
     for item in result["results"]["bindings"]:
@@ -82,9 +75,6 @@ def GetAllAanwezigeQuery(zitting):
 
     """)
     result = sparql.query().convert()
-
-# with open("data" + str(counter) + ".json","w") as filefornow:
-#      json.dump(result,filefornow)
 
     AlleAanweizgen =[]
     for item in result["results"]["bindings"]:
@@ -135,8 +125,10 @@ def GetMandatarissenPerson(listOfNames,eenZitting,Everything):
     # get mandatrisUri from personnames
     Dict = {}
     for name in listOfNames:
-        x = "\"" + name.split()[0] + "\"" # bad idea, what if achternaam, in meer dan 1 stuk, bv. Van der waels, dan enkel "Van" als achternaam
-        y = "\"" + name.split()[1] + "\"" #TODO ipv string, gebruik lijst [voornaam, achternaam]
+        x = "\"" + name.split()[0] + "\"" 
+        # bad idea, what if achternaam, in meer dan 1 stuk, bv. Van der waels, dan enkel "Van" als achternaam
+        y = "\"" + name.split()[1] + "\""
+        #TODO ipv string, gebruik lijst [voornaam, achternaam]
 
 
         sparql.setQuery("""
@@ -162,8 +154,6 @@ def GetMandatarissenPerson(listOfNames,eenZitting,Everything):
 
         """)
         result = sparql.query().convert()
-        # with open("data1.json","w") as filefornow:
-        #     json.dump(result,filefornow)
 
         for item in result["results"]["bindings"]:  
             mandaatnaam = item["mandatarisUri"]["value"] #kan meer dan 1 mandataris hebben.
@@ -215,5 +205,4 @@ def GetAlleMandatarisVanBestuursOrgaan(bestuursOrgaan):
         alleNamenBijBestuursOrgaan.append(volledigeNaam)
     return alleNamenBijBestuursOrgaan
 
-# main()
 

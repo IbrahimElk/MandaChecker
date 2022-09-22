@@ -11,22 +11,11 @@ import matplotlib.pyplot as plt
 #------------------------------------------------------------------------------------
 #------------------------------- HULPFUNTIES ----------------------------------------
 #------------------------------------------------------------------------------------
-
-# def getLinksFromFile(relPathtextFiles):
-#     textFile = open("./"+relPathtextFiles, "r")
-#     links = textFile.readlines() #url's inside a text file
-#     return links
     
 def getHtmlPageFromLink(link):
     response = urlopen(link)
     soup = bs(response, 'html.parser')
     return soup
-
-# def GetHtmlPageFromListOfLinks(LinkOfLinks):
-#     listOfHtmls = []
-#     for Link in LinkOfLinks:
-#         listOfHtmls.append(getHtmlPageFromLink(Link))
-#     return listOfHtmls
 
 def getTagsFromProperty(html):
     Tags0 = html.find_all(property="besluit:heeftAanwezigeBijStart") 
@@ -34,12 +23,6 @@ def getTagsFromProperty(html):
     Tags2 = html.find_all(property="besluit:heeftVoorzitter besluit:heeftAanwezigeBijStart") 
     Tags = list(set(Tags0 + Tags1 + Tags2))
     return Tags
-
-# def getTagsFromPropertyFromList(HtmlList):
-#     ListOfHtmlsOfTags = []
-#     for HtmlPage in HtmlList:
-#         ListOfHtmlsOfTags.append(getTagsFromProperty(HtmlPage))
-#     return ListOfHtmlsOfTags
 
 def getTextFromInsideTag(tag):
     Persoonsnaam = tag.getText() 
@@ -70,12 +53,6 @@ def getElementOfListInAList(NestedListOfLinksAndBestuursOrganen,FirstOrSecondEle
     for LISTO in NestedListOfLinksAndBestuursOrganen:
         ListOfOnlyLinks.append(LISTO[FirstOrSecondElement])
     return ListOfOnlyLinks
-    
-# def getListOfTextFromInsideListOfTags(listOfTagsOfLinks):
-#     Personen = []
-#     for Link in listOfTagsOfLinks:
-#         Personen.append(getTextFromList(Link))
-#     return Personen
 
 #gegeven naam, geef mandatarisUri terug in een dictionary
 def getDictOfMandaFromListName(ListOfNames,zittingUri,everthinh):
@@ -94,9 +71,6 @@ def getNamesFromWebPage(Everything):
         tags = getTagsFromProperty(soup)
         text = getTextFromList(tags)
         LISTO[sitting] = text
-        # listOfHtmls = GetHtmlPageFromListOfLinks(nestedListOfLinks)
-        # listOfTags = getTagsFromPropertyFromList(listOfHtmls) 
-        # nestedListOfText = getListOfTextFromInsideListOfTags(listOfTags)
     return LISTO
 
 def getNamesFromSittingFromDatabase(Everything):
